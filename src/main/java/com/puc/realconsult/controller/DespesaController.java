@@ -1,9 +1,7 @@
 package com.puc.realconsult.controller;
 
 import com.puc.realconsult.model.realConsult.DespesaModel;
-import com.puc.realconsult.model.realConsult.CategoriaDespesaModel;
 import com.puc.realconsult.service.DespesaService;
-import com.puc.realconsult.service.CategoriaDespesaService;
 import com.puc.realconsult.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,26 +20,19 @@ public class DespesaController {
     private DespesaService despesaService;
     @Autowired
     private NotificationService notificationService;
-    @Autowired
-    private CategoriaDespesaService categoriaService;
+
     @GetMapping
     public ResponseEntity<List<DespesaModel>> listarDespesas(
             @RequestParam(required = false) String busca,
-            @RequestParam(required = false) String categoriaNome,
+            @RequestParam(required = false) String categoria,
             @RequestParam(required = false) String periodo) {
-
+        
         List<DespesaModel> despesas;
-
+        
         if (busca != null && !busca.trim().isEmpty()) {
-
             despesas = despesaService.buscarPorTermo(busca);
-        } else if (categoriaNome != null && !categoriaNome.trim().isEmpty()) {
-
-            CategoriaDespesaModel categoria = categoriaService.getCategoriaByNome(categoriaNome)
-                    .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
-
-
-            despesas = despesaService.buscarPorCategoria(categoria.getNome());
+        } else if (categoria != null && !categoria.trim().isEmpty()) {
+            despesas = despesaService.buscarPorCategoria(categoria);
         } else if (periodo != null && !periodo.trim().isEmpty()) {
 
             String[] datas = periodo.split(",");
@@ -50,18 +41,15 @@ public class DespesaController {
                 LocalDate dataFim = LocalDate.parse(datas[1]);
                 despesas = despesaService.buscarPorPeriodo(dataInicio, dataFim);
             } else {
-
                 despesas = despesaService.listarTodas();
             }
         } else {
-
             despesas = despesaService.listarTodas();
         }
-
+        
         return ResponseEntity.ok(despesas);
     }
-
-
+    
     @GetMapping("/{id}")
     public ResponseEntity<DespesaModel> buscarPorId(@PathVariable Long id) {
         return despesaService.buscarPorId(id)

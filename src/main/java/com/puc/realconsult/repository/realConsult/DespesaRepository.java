@@ -1,7 +1,6 @@
 package com.puc.realconsult.repository.realConsult;
 
 import com.puc.realconsult.model.realConsult.DespesaModel;
-import com.puc.realconsult.model.realConsult.CategoriaDespesaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,15 +17,13 @@ public interface DespesaRepository extends JpaRepository<DespesaModel, Long> {
            "LOWER(d.categoria) LIKE LOWER(CONCAT('%', :termo, '%'))")
     List<DespesaModel> findByTermo(@Param("termo") String termo);
     
-    List<DespesaModel> findByCategoria(CategoriaDespesaModel categoria);
+    List<DespesaModel> findByCategoria(String categoria);
     
     List<DespesaModel> findByDataBetween(LocalDate dataInicio, LocalDate dataFim);
     
-    List<DespesaModel> findByCategoriaAndDataBetween(CategoriaDespesaModel categoria, LocalDate dataInicio, LocalDate dataFim);
+    List<DespesaModel> findByCategoriaAndDataBetween(String categoria, LocalDate dataInicio, LocalDate dataFim);
 
     List<DespesaModel> findAllByOrderByDataDesc();
 
     List<DespesaModel> findByTituloContainingIgnoreCase(String titulo);
-
-    List<DespesaModel> findByCategoria_Nome(String nome);
 }

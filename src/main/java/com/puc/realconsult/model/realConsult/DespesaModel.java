@@ -10,8 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 @Entity
 @Table(name = "despesas")
@@ -28,7 +26,11 @@ public class DespesaModel {
     @Size(max = 100, message = "Título deve ter no máximo 100 caracteres")
     @Column(nullable = false)
     private String titulo;
-
+    
+    @NotBlank(message = "Categoria é obrigatória")
+    @Size(max = 50, message = "Categoria deve ter no máximo 50 caracteres")
+    @Column(nullable = false)
+    private String categoria;
     
     @NotNull(message = "Valor é obrigatório")
     @DecimalMin(value = "0.01", message = "Valor deve ser maior que zero")
@@ -46,12 +48,6 @@ public class DespesaModel {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusDespesa status = StatusDespesa.ATIVA;
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id", nullable = false)
-    private CategoriaDespesaModel categoria;
-
     
     public enum StatusDespesa {
         ATIVA, INATIVA, PAGA, PENDENTE
@@ -60,6 +56,5 @@ public class DespesaModel {
     @CreationTimestamp
     @Column(name = "creation_date", updatable = false)
     private LocalDateTime creationDate;
-
 
 }
