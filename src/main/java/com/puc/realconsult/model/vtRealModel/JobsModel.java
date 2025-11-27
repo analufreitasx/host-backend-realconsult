@@ -1,11 +1,10 @@
-
-
 package com.puc.realconsult.model.vtRealModel;
 
+import com.puc.realconsult.utils.JsonUtil;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ws_jobs")
@@ -15,21 +14,21 @@ public class JobsModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_job")
-    private Integer idJob;
+    private Long idJob;
 
     @Column(name = "session_id")
     private Integer sessionId;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "login", length = 50, nullable = false)
     private String login;
 
-    @Column(nullable = false, columnDefinition = "timestamp default current_timestamp")
-    private Timestamp begin;
+    @Column(name = "begin", nullable = false)
+    private LocalDateTime dataInicio;
 
     @Column(name = "begin_status")
-    private Timestamp beginStatus;
+    private LocalDateTime beginStatus;
 
-    @Column(length = 3, nullable = false)
+    @Column(name = "status", length = 3, nullable = false)
     private String status;
 
     @Column(name = "status_retorno", length = 2000)
@@ -44,13 +43,13 @@ public class JobsModel {
     @Column(name = "hora_saida")
     private Integer horaSaida;
 
-    @Column
-    private Float raio;
+    @Column(name = "raio")
+    private Double raio;
 
     @Column(name = "tipo_dia", length = 10)
     private String tipoDia;
 
-    @Column(name = "qtde_linhas")
+    @Column(name = "qtde_linhas", nullable = false)
     private Integer qtdeLinhas;
 
     @Column(name = "origin_address", length = 255)
@@ -62,7 +61,7 @@ public class JobsModel {
     @Column(name = "enable_walking", nullable = false)
     private Boolean enableWalking;
 
-    @Column(nullable = false)
+    @Column(name = "distance", nullable = false)
     private Integer distance;
 
     @Column(name = "xml_result", length = 50)
@@ -74,7 +73,7 @@ public class JobsModel {
     @Column(name = "cpu_average")
     private Double cpuAverage;
 
-    @Column
+    @Column(name = "memory")
     private Double memory;
 
     @Column(name = "id_batch")
@@ -121,48 +120,52 @@ public class JobsModel {
 
     @Override
     public String toString() {
-        return "{" +
-                "\"idJob\":" + idJob + "," +
-                "\"sessionId\":" + sessionId + "," +
-                "\"login\":\"" + login + "\"," +
-                "\"begin\":\"" + begin + "\"," +
-                "\"beginStatus\":\"" + beginStatus + "\"," +
-                "\"status\":\"" + status + "\"," +
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\n");
+        boolean[] first = { true };
 
-                "\"statusRetorno\":" + (statusRetorno != null ? (statusRetorno instanceof String ? "\"" + statusRetorno + "\"" : statusRetorno.toString()) : "null") + "," +
+        JsonUtil.appendNumber(sb, "idJob", idJob, first);
+        JsonUtil.appendNumber(sb, "sessionId", sessionId, first);
+        JsonUtil.appendString(sb, "login", login, first);
+        JsonUtil.appendDateTime(sb, "begin", dataInicio, first);
+        JsonUtil.appendDateTime(sb, "beginStatus", beginStatus, first);
+        JsonUtil.appendString(sb, "status", status, first);
 
-                "\"idaVolta\":" + idaVolta + "," +
-                "\"horaEntrada\":" + horaEntrada + "," +
-                "\"horaSaida\":" + horaSaida + "," +
-                "\"raio\":" + raio + "," +
-                "\"tipoDia\":\"" + tipoDia + "\"," +
-                "\"qtdeLinhas\":" + qtdeLinhas + "," +
+        JsonUtil.appendJsonOrString(sb, "statusRetorno", statusRetorno, first);
 
-                "\"originAddress\":" + (originAddress != null ? originAddress : "null") + "," +
-                "\"destinationAddress\":" + (destinationAddress != null ? destinationAddress : "null") + "," +
+        JsonUtil.appendNumber(sb, "idaVolta", idaVolta, first);
+        JsonUtil.appendNumber(sb, "horaEntrada", horaEntrada, first);
+        JsonUtil.appendNumber(sb, "horaSaida", horaSaida, first);
+        JsonUtil.appendNumber(sb, "raio", raio, first);
+        JsonUtil.appendString(sb, "tipoDia", tipoDia, first);
+        JsonUtil.appendNumber(sb, "qtdeLinhas", qtdeLinhas, first);
 
-                "\"enableWalking\":" + enableWalking + "," +
-                "\"distance\":" + distance + "," +
-                "\"xmlResult\":\"" + xmlResult + "\"," +
-                "\"timeProc\":" + timeProc + "," +
-                "\"cpuAverage\":" + cpuAverage + "," +
-                "\"memory\":" + memory + "," +
-                "\"idBatch\":" + idBatch + "," +
-                "\"proposedValue\":" + proposedValue + "," +
-                "\"qtdeDiasMes\":" + qtdeDiasMes + "," +
-                "\"valeDia\":" + valeDia + "," +
-                "\"latOrigem\":" + latOrigem + "," +
-                "\"longOrigem\":" + longOrigem + "," +
-                "\"latDestino\":" + latDestino + "," +
-                "\"longDestino\":" + longDestino + "," +
-                "\"escolhaIda\":" + escolhaIda + "," +
-                "\"escolhaVolta\":" + escolhaVolta + "," +
-                "\"jobInfo\":\"" + jobInfo + "\"," +
-                "\"informacoesAdicionais\":\"" + informacoesAdicionais + "\"," +
-                "\"consultaValida\":" + consultaValida + "," +
-                "\"errorMsg\":\"" + errorMsg + "\"" +
-                "}";
+        JsonUtil.appendJsonOrString(sb, "originAddress", originAddress, first);
+        JsonUtil.appendJsonOrString(sb, "destinationAddress", destinationAddress, first);
+
+        JsonUtil.appendBoolean(sb, "enableWalking", enableWalking, first);
+        JsonUtil.appendNumber(sb, "distance", distance, first);
+        JsonUtil.appendJsonOrString(sb, "xmlResult", xmlResult, first);
+        JsonUtil.appendNumber(sb, "timeProc", timeProc, first);
+        JsonUtil.appendNumber(sb, "cpuAverage", cpuAverage, first);
+        JsonUtil.appendNumber(sb, "memory", memory, first);
+        JsonUtil.appendNumber(sb, "idBatch", idBatch, first);
+        JsonUtil.appendNumber(sb, "proposedValue", proposedValue, first);
+        JsonUtil.appendNumber(sb, "qtdeDiasMes", qtdeDiasMes, first);
+        JsonUtil.appendNumber(sb, "valeDia", valeDia, first);
+        JsonUtil.appendNumber(sb, "latOrigem", latOrigem, first);
+        JsonUtil.appendNumber(sb, "longOrigem", longOrigem, first);
+        JsonUtil.appendNumber(sb, "latDestino", latDestino, first);
+        JsonUtil.appendNumber(sb, "longDestino", longDestino, first);
+        JsonUtil.appendNumber(sb, "escolhaIda", escolhaIda, first);
+        JsonUtil.appendNumber(sb, "escolhaVolta", escolhaVolta, first);
+        JsonUtil.appendJsonOrString(sb, "jobInfo", jobInfo, first);
+        JsonUtil.appendJsonOrString(sb, "informacoesAdicionais", informacoesAdicionais, first);
+        JsonUtil.appendBoolean(sb, "consultaValida", consultaValida, first);
+        JsonUtil.appendJsonOrString(sb, "errorMsg", errorMsg, first);
+
+        sb.append("\n}");
+        return sb.toString();
     }
-
 
 }

@@ -2,7 +2,6 @@ package com.puc.realconsult.model.vtRealModel;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "cliente")
@@ -23,62 +22,30 @@ public class ClienteModel {
     @Column(name = "base_mapa_cliente", length = 40)
     private String baseMapaCliente;
 
-    @NotBlank(message = "nome deve ser preenchido")
-    @Column(name = "nome_empresa", length = 150)
+    @Column(name = "nome_empresa", length = 30)
     private String nomeEmpresa;
 
-    @NotBlank(message = "Cnpj deve ser preenchido")
-    @Column(name = "cnpj", length = 50, unique = true)
+    @Column(name = "cnpj", length = 20)
     private String cnpj;
 
-    @Column(name = "path", length = 100)
+    @Column(name = "path", length = 100, nullable = false)
     private String path;
 
-    @Column(name = "numero_consultas")
-    private Integer numeroConsultas = 0;
+    @Column(name = "numero_consultas", nullable = false)
+    private Integer numeroConsultas;
 
-    @Column(name = "numero_consultas_realizadas")
-    private Integer numeroConsultasRealizadas = 0;
+    @Column(name = "numero_consultas_realizadas", nullable = false)
+    private Integer numeroConsultasRealizadas;
 
     @Column(name = "semVT")
     private Boolean semVT;
 
-    @Column(name = "tipoCartao", length = 50)
-    private String tipoCartao = "Cartão Empresarial (PJ)";
+    @Column(name = "tipoCartao", length = 50, nullable = false)
+    private String tipoCartao;
 
-    @Column(name = "tipoRoteirizacao", length = 10)
-    private String tipoRoteirizacao = "Tp";
+    @Column(name = "tipoRoteirizacao", length = 2, nullable = false)
+    private String tipoRoteirizacao;
 
-    @Column(name = "perfil_consulta", length = 10)
-    private String perfilConsulta = "pre pago";
-
-    public ClienteModel() {
-    }
-
-    public ClienteModel(String ufDefault, String baseCliente, String baseMapaCliente, String nomeEmpresa,
-                        String cnpj, String path, Boolean semVT, String tipoCartao,
-                        String tipoRoteirizacao, String perfilConsulta) {
-        this.ufDefault = ufDefault;
-        this.baseCliente = baseCliente;
-        this.baseMapaCliente = baseMapaCliente;
-        this.nomeEmpresa = nomeEmpresa;
-        this.cnpj = cnpj;
-        this.path = path;
-        this.semVT = semVT;
-        this.tipoCartao = tipoCartao;
-        this.tipoRoteirizacao = tipoRoteirizacao;
-        this.perfilConsulta = perfilConsulta;
-    }
-
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "idCliente=" + idCliente +
-                ", nomeEmpresa='" + nomeEmpresa + '\'' +
-                ", cnpj='" + cnpj + '\'' +
-                ", tipoCartao='" + tipoCartao + '\'' +
-                ", perfilConsulta='" + perfilConsulta + '\'' +
-                '}';
-    }
+    @Column(name = "perfil_consulta", length = 10, nullable = false)
+    private String perfilConsulta;
 }
-

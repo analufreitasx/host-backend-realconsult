@@ -15,7 +15,7 @@ public class UsuarioAPIModel {
     @Column(name = "senha", length = 100, nullable = false)
     private String senha;
 
-    @JoinColumn(name = "id_cliente")
+    @JoinColumn(name = "id_cliente", nullable = false)
     @OneToOne
     private ClienteModel idCliente;
 
