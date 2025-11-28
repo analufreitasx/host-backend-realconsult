@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class HistoricoConsultaDTO {
 
-    private Long id;
+    private String id;
     private LocalDateTime dataConsulta;
     private String status;
     private String origem;

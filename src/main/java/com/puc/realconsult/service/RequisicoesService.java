@@ -183,7 +183,7 @@ public class RequisicoesService {
 
     private HistoricoConsultaDTO mapFromJobs(JobsModel job) {
         HistoricoConsultaDTO dto = new HistoricoConsultaDTO();
-        dto.setId(Long.valueOf(job.getIdJob()));
+        dto.setId(Long.valueOf(job.getIdJob()) + "_wsjobs");
         dto.setDataConsulta(job.getDataInicio());
         dto.setStatus(job.getStatus());
         dto.setOrigem(job.getOriginAddress());
@@ -194,7 +194,7 @@ public class RequisicoesService {
 
     private HistoricoConsultaDTO mapFromAuditoria(AuditoriaResultadoModel auditoria) {
         HistoricoConsultaDTO dto = new HistoricoConsultaDTO();
-        dto.setId(auditoria.getIdResultado());
+        dto.setId(auditoria.getIdResultado() + "_auditoria_resultado");
         dto.setDataConsulta(auditoria.getDataEntrada());
         dto.setStatus(auditoria.getStatus());
         dto.setOrigem(auditoria.getEndOrigem());

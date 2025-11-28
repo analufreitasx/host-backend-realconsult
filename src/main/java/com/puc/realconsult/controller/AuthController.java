@@ -76,10 +76,10 @@ public class AuthController {
         return ResponseEntity.ok(result.user());
     }
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestBody RedefinirSenhaRequest request) {
+    @PostMapping("/reset-password/{id}")
+    public ResponseEntity<?> resetPassword(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(authService.resetPassword(request));
+            return ResponseEntity.ok(authService.resetPassword(id));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

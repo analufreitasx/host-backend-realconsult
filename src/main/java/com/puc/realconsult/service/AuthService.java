@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,24 +60,12 @@ public class AuthService implements UserDetailsService {
         return new AuthLoginResult(token, userDTO);
     }
 
-    public String resetPassword(RedefinirSenhaRequest request) {
-        Optional<ResetSenhaToken> tokenOpt = tokenRepository.findByToken(request.getToken());
+    public String resetPassword(Long userId) {
+        UserModel usuario = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (tokenOpt.isEmpty()) {
-            throw new RuntimeException("Token inválido.");
-        }
-
-        ResetSenhaToken resetToken = tokenOpt.get();
-
-        if (resetToken.isExpired()) {
-            throw new RuntimeException("Token expirado.");
-        }
-
-        UserModel usuario = resetToken.getUsuario();
-        usuario.setSenha(passwordEncoder.encode(request.getNovaSenha()));
+        usuario.setSenha(passwordEncoder.encode("123456"));
         userRepository.save(usuario);
-
-        tokenRepository.delete(resetToken);
 
         return "Senha redefinida com sucesso!";
     }
